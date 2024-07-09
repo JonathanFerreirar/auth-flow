@@ -3,6 +3,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 
 import { cn } from '@/lib/utils'
+import ProgressBar from '@/navigation/progressBar'
 
 import { poppins } from './font'
 
@@ -18,7 +19,9 @@ const RootLayout = ({
 }>) => {
   return (
     <html lang="pt">
-      <body className={cn('bg-white', poppins.className)}>{children}</body>
+      <body className={cn('bg-white', poppins.className)}>
+        <ProgressBar>{children}</ProgressBar>
+      </body>
     </html>
   )
 }

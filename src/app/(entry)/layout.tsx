@@ -36,7 +36,7 @@ const EntryLayout = ({ children }: { children: React.ReactNode }) => {
           </p>
         </div>
       </div>
-      <div className="w-full">{children}</div>
+      <div className="h-screen w-full">{children}</div>
     </section>
   )
 }

@@ -1,3 +1,104 @@
 {
-  "extends": "next/core-web-vitals"
-}
+  "parserOptions": {
+  "project": true
+  },
+  "plugins": [
+  "prefer-arrow",
+  "tailwindcss",
+  "simple-import-sort"
+  ],
+  "extends": [
+  "@rocketseat/eslint-config/next",
+  "next/core-web-vitals",
+  "plugin:tailwindcss/recommended"
+  ],
+  "ignorePatterns": [
+  ".mjs",
+  "dist/",
+  "node_modules/",
+  "build/",
+  ".config.ts",
+  "setup.ts",
+  ".js"
+  ],
+  "rules": {
+  "@typescript-eslint/consistent-type-definitions": "off",
+  "import/prefer-default-export": "off",
+  "tailwindcss/classnames-order": "warn",
+  "react/jsx-fragments": [
+  "error",
+  "element"
+  ],
+  "prefer-arrow/prefer-arrow-functions": [
+  "error",
+  {
+  "disallowPrototype": true,
+  "singleReturnOnly": false,
+  "classPropertiesAllowed": false
+  }
+  ],
+  "no-restricted-syntax": [
+  "error",
+  {
+  "selector": "ImportDeclaration[source.value='react'] ImportSpecifier",
+  "message": "Import React hooks as part of the default React import, INSTEADE import React, { useState } from 'react' useState(); USE React.useState()."
+  }
+  ],
+  "simple-import-sort/imports": [
+  "error",
+  {
+  "groups": [
+  // Primeiro grupo para arquivos CSS
+  [
+  "^.+\\.?(css)$"
+  ],
+  // Segundo grupo para pacotes React, Next.js e outros pacotes de npm
+  [
+  "^react",
+  "^next",
+  "^react-icons",
+  "^@?\\w"
+  ],
+  // Terceiro grupo para pacotes internos com o prefixo @/ ou components
+  [
+  "^(@|components)(/.|$)"
+  ],
+  // Grupo para imports de tipo (TypeScript)
+  [
+  "^type"
+  ],
+  // Quarto grupo para imports que envolvem módulos esm
+  [
+  "^\\u0000"
+  ],
+  // Quinto grupo para imports relativos de pastas pai
+  [
+  "^\\.\\.(?!/?$)",
+  "^\\.\\./?$"
+  ],
+  // Sexto grupo para imports relativos de pastas atuais
+  [
+  "^\\./(?=./)(?!/?$)",
+  "^\\.(?!/?$)",
+  "^\\./?$"
+  ]
+  ]
+  }
+  ]
+  },
+  "overrides": [
+  {
+  "files": [
+  ".tsx",
+  ".jsx"
+  ],
+  "rules": {
+  "import/prefer-default-export": "error",
+  "@typescript-eslint/consistent-type-definitions": [
+  "error",
+  "type"
+  ]
+  }
+  }
+  ]
+  }

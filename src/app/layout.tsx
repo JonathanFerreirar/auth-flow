@@ -19,7 +19,7 @@ const RootLayout = ({
 }>) => {
   return (
     <html lang="pt">
-      <body className={cn('bg-white', poppins.className)}>
+      <body className={cn('bg-white antialiased', poppins.className)}>
         <ProgressBar>{children}</ProgressBar>
       </body>
     </html>

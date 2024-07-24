@@ -1,9 +1,15 @@
 'use client'
 
+import React from 'react'
+
+import { RegisterUser } from '@/types/auth'
 import { supabase } from '@/utils/supabase/client'
 
 export const useAuth = () => {
+  const [isLoading, setIsLoading] = React.useState(false)
+
   const handleLoginAndResgiterWithGithub = async () => {
+    setIsLoading(true)
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
@@ -12,9 +18,11 @@ export const useAuth = () => {
     })
 
     console.log(error)
+    setIsLoading(false)
   }
 
   const handleUserLogin = async (email: string, password: string) => {
+    setIsLoading(true)
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -23,19 +31,32 @@ export const useAuth = () => {
     console.log(data)
 
     console.log(error)
+    setIsLoading(false)
   }
 
-  const handleRegisterUser = async (email: string, password: string) => {
+  const handleRegisterUser = async ({
+    name,
+    email,
+    password,
+  }: RegisterUser) => {
+    setIsLoading(true)
+
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        data: {
+          display_name: name,
+        },
+      },
     })
-
     console.log(data)
 
     console.log(error)
+    setIsLoading(false)
   }
   return {
+    isLoading,
     handleUserLogin,
     handleRegisterUser,
     handleLoginAndResgiterWithGithub,

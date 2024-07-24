@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { AiOutlineLoading } from 'react-icons/ai'
 import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
 
@@ -39,17 +40,32 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
+  isLoading?: boolean
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  (
+    {
+      size,
+      variant,
+      children,
+      className,
+      asChild = false,
+      isLoading = false,
+      ...props
+    },
+    ref,
+  ) => {
     const Comp = asChild ? Slot : 'button'
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
+        disabled={isLoading || props.disabled}
+        className={cn(buttonVariants({ variant, size, className }))}
         {...props}
-      />
+      >
+        {isLoading ? <AiOutlineLoading className="animate-spin" /> : children}
+      </Comp>
     )
   },
 )

@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 
 import PasswordInput from '@/components/passwordInput'
-import { useAuth } from '@/hook/auth'
+import { useAuth } from '@/hook/useAuth'
 import { Button } from '@/primitive/ui/button'
 import ErrorMessager from '@/primitive/ui/error'
 import { Input } from '@/primitive/ui/input'
@@ -24,10 +24,13 @@ const FormResgiter = () => {
     resolver: zodResolver(formWithNameSchema),
   })
 
-  const { handleLoginAndResgiterWithGithub, handleRegisterUser } = useAuth()
+  const { handleLoginAndResgiterWithGithub, handleRegisterUser, isLoading } =
+    useAuth()
 
   const onSubmit: SubmitHandler<FormResgiterSchema> = async (data) => {
-    await handleRegisterUser(data.email, data.senha)
+    const { email, name, senha: password } = data
+
+    await handleRegisterUser({ name, email, password })
   }
 
   return (
@@ -81,7 +84,9 @@ const FormResgiter = () => {
         {errors?.senha && <ErrorMessager>{errors.senha.message}</ErrorMessager>}
       </div>
 
-      <Button className="self-end px-14 py-7">Entrar</Button>
+      <Button isLoading={isLoading} className="w-[140px] self-end px-14 py-7">
+        Resgitre-se
+      </Button>
     </form>
   )
 }

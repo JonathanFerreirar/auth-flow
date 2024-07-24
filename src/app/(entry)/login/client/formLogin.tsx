@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 
 import PasswordInput from '@/components/passwordInput'
-import { useAuth } from '@/hook/auth'
+import { useAuth } from '@/hook/useAuth'
 import { Button } from '@/primitive/ui/button'
 import ErrorMessager from '@/primitive/ui/error'
 import { Input } from '@/primitive/ui/input'
@@ -24,7 +24,8 @@ const FormLogin = () => {
     resolver: zodResolver(formSchema),
   })
 
-  const { handleLoginAndResgiterWithGithub, handleUserLogin } = useAuth()
+  const { handleLoginAndResgiterWithGithub, handleUserLogin, isLoading } =
+    useAuth()
 
   const onSubmit: SubmitHandler<FormLoginSchema> = async (data) => {
     await handleUserLogin(data.email, data.senha)
@@ -72,7 +73,11 @@ const FormLogin = () => {
 
         {errors?.senha && <ErrorMessager>{errors.senha.message}</ErrorMessager>}
       </div>
-      <Button type="submit" className="self-end px-14 py-7">
+      <Button
+        type="submit"
+        isLoading={isLoading}
+        className="w-[140px] self-end px-14 py-7"
+      >
         Entrar
       </Button>
     </form>

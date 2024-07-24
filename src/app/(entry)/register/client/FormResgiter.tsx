@@ -1,11 +1,12 @@
 'use client'
 
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { FaGithub } from 'react-icons/fa'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 
 import PasswordInput from '@/components/passwordInput'
+import { useAuth } from '@/hook/auth'
 import { Button } from '@/primitive/ui/button'
 import ErrorMessager from '@/primitive/ui/error'
 import { Input } from '@/primitive/ui/input'
@@ -15,6 +16,7 @@ type FormResgiterSchema = z.infer<typeof formWithNameSchema>
 
 const FormResgiter = () => {
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors },
@@ -22,8 +24,10 @@ const FormResgiter = () => {
     resolver: zodResolver(formWithNameSchema),
   })
 
-  const onSubmit: SubmitHandler<FormResgiterSchema> = (data) => {
-    console.log(data)
+  const { handleLoginAndResgiterWithGithub, handleRegisterUser } = useAuth()
+
+  const onSubmit: SubmitHandler<FormResgiterSchema> = async (data) => {
+    await handleRegisterUser(data.email, data.senha)
   }
 
   return (
@@ -32,9 +36,14 @@ const FormResgiter = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="mx-auto flex w-full max-w-[380px] flex-col gap-y-10"
     >
-      <Button variant="ghost" className="my-10 flex items-center gap-x-2 py-4">
+      <Button
+        type="button"
+        variant="ghost"
+        onClick={handleLoginAndResgiterWithGithub}
+        className="my-10 flex items-center gap-x-2 py-4"
+      >
         <FaGithub size={20} />
-        Login com Github
+        Resgitre-se com Github
       </Button>
       <div>
         <label className="text-left text-xs text-label">Nome</label>
@@ -56,11 +65,19 @@ const FormResgiter = () => {
       </div>
       <div>
         <label className="text-left text-xs text-label">Senha</label>
-        <PasswordInput
-          {...register('senha')}
-          className="rounded-none border-x-0 border-b border-t-0 border-line"
-          placeholder="*********"
+        <Controller
+          name="senha"
+          control={control}
+          render={({ field: { onChange, onBlur } }) => (
+            <PasswordInput
+              onBlur={onBlur}
+              onChange={onChange}
+              placeholder="*********"
+              className="rounded-none border-x-0 border-b border-t-0 border-line"
+            />
+          )}
         />
+
         {errors?.senha && <ErrorMessager>{errors.senha.message}</ErrorMessager>}
       </div>
 

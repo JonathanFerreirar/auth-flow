@@ -21,7 +21,7 @@ const Home = async () => {
       </LogoutButton>
 
       <h1 className="text-center text-[45px] text-white">
-        Olá {userInfo.display_name}
+        Olá {userInfo?.display_name || userInfo?.full_name}
       </h1>
 
       <IoPersonCircleOutline size={400} className="text-white/70" />

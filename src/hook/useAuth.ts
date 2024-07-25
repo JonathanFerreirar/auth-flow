@@ -18,7 +18,6 @@ export const useAuth = () => {
         redirectTo: `${process.env.NEXT_PUBLIC_URL}/auth/callback`,
       },
     })
-    push('/')
 
     console.log(error)
     setIsLoading(false)

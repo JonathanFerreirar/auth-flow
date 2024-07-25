@@ -2,7 +2,7 @@
 import { type NextRequest, NextResponse } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 
-const authPaths = ['/login', '/register']
+const authPaths = ['/login', '/register', '/auth/callback']
 
 export const updateSession = async (request: NextRequest) => {
   let supabaseResponse = NextResponse.next({

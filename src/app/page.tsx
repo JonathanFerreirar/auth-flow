@@ -1,5 +1,6 @@
-import { IoPersonCircleOutline } from 'react-icons/io5'
+import { IoLogOutOutline, IoPersonCircleOutline } from 'react-icons/io5'
 
+import { LogoutButton } from '@/components/logoutButton'
 import { UserMetadata } from '@/types/auth'
 import { createClient } from '@/utils/supabase/server'
 
@@ -11,7 +12,14 @@ const Home = async () => {
   const userInfo = user?.user_metadata as UserMetadata
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between bg-gradient  p-24">
+    <main className="relative flex min-h-screen flex-col items-center justify-between  bg-gradient p-24">
+      <LogoutButton
+        variant="link"
+        className="absolute right-3 top-3 flex gap-2"
+      >
+        Sair <IoLogOutOutline />
+      </LogoutButton>
+
       <h1 className="text-center text-[45px] text-white">
         Olá {userInfo.display_name}
       </h1>

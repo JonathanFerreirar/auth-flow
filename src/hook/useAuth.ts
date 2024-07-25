@@ -1,12 +1,14 @@
 'use client'
 
 import React from 'react'
+import { useRouter } from 'next13-progressbar'
 
 import { RegisterUser } from '@/types/auth'
 import { supabase } from '@/utils/supabase/client'
 
 export const useAuth = () => {
   const [isLoading, setIsLoading] = React.useState(false)
+  const { push } = useRouter()
 
   const handleLoginAndResgiterWithGithub = async () => {
     setIsLoading(true)
@@ -16,6 +18,7 @@ export const useAuth = () => {
         redirectTo: `${process.env.NEXT_PUBLIC_URL}/auth/callback`,
       },
     })
+    push('/')
 
     console.log(error)
     setIsLoading(false)
@@ -27,6 +30,7 @@ export const useAuth = () => {
       email,
       password,
     })
+    push('/')
 
     console.log(data)
 
@@ -50,13 +54,22 @@ export const useAuth = () => {
         },
       },
     })
+    push('/')
     console.log(data)
 
     console.log(error)
     setIsLoading(false)
   }
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut()
+    push('/login')
+    console.log(error)
+  }
+
   return {
     isLoading,
+    handleLogout,
     handleUserLogin,
     handleRegisterUser,
     handleLoginAndResgiterWithGithub,
